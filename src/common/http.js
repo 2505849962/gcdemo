@@ -7,8 +7,9 @@ let $axios = axios.create({
     timeout:3000
 })
 
-// 拦截器
+// 请求拦截器
 $axios.interceptors.request.use(function (config) {
+    // console.log(config)
     if(config.url == '/userlogin'){
         return config;
     }else{
@@ -25,6 +26,7 @@ $axios.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 $axios.interceptors.response.use(function (response) {
+    // console.log(response)
     if(response.data.code == 403){
         router.push('/login')
         return response.data;

@@ -51,12 +51,9 @@ export default {
            localStorage.removeItem("userinfo")
            state.userinfo = {};
            router.push("/login")
-       } 
-        
-          
+       }      
     },
     actions:{
-
         async get_user_list({commit,state,dispatch}){
          let res = await getUser(state.page,state.size);
             commit('SET_LIST',res) 

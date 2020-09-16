@@ -15,9 +15,9 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                      <el-form-item label="二级分类">
-                            <el-select v-model="forminfo.second_cateid" @change="topChange" placeholder="请选择">
-                                <el-option  v-for="item in catelist" :key="item.id" :label="item.catename"  :value="item.id">
+                       <el-form-item label="二级分类">
+                            <el-select v-model="forminfo.second_cateid" placeholder="请选择">
+                                <el-option  v-for="item in secondlist" :key="item.id" :label="item.catename"  :value="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -48,13 +48,13 @@
                             </el-dialog>
                       </el-form-item> 
                       <el-form-item label="商品规格">
-                            <el-select v-model="forminfo.goodsid" @change="goodsChange"  placeholder="请选择">
-                                <el-option  v-for="item in goodslist" :key="item.id" :label="item.goodsname"  :value="item.id">
+                            <el-select v-model="forminfo.specsid" @change="specsChange"  placeholder="请选择">
+                                <el-option  v-for="item in specslist" :key="item.id" :label="item.specsname"  :value="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="商品属性值">
-                            <el-select v-model="forminfo.goodsattr" multiple placeholder="请选择">
+                            <el-select v-model="forminfo.specsattr" multiple placeholder="请选择">
                                 <el-option  v-for="item in attrslist" :key="item" :label="item"  :value="item">
                                 </el-option>
                             </el-select>
@@ -77,7 +77,7 @@
         <el-tab-pane label="详细描述" name="second">
           <el-row>
             <el-col>
-
+                <vue-wangeditor  ref="wangeditor" width="100%"  height="400"  id="editor" ></vue-wangeditor>
             </el-col>
           </el-row>
         </el-tab-pane>
@@ -92,15 +92,13 @@
           </el-form-item>
         </el-col>
       </el-row>
-   
-
-
 
     </el-form> 
   </el-dialog>
 </template>
 
 <script>
+import vueWangeditor from "vue-wangeditor"
 
 import { addGoods, editGoods } from "@/request/goods";
 import { mapGetters, mapActions } from "vuex";
@@ -113,8 +111,8 @@ let defaultItem = {
   market_price:"",
   img:"",
   description:"",
-  goodsid:"",
-  goodsattr:"",
+  specsid:"",
+  specsattr:"",
   isnew:2,
   ishot:2,
   status: 1, //状态 1正常 2禁用
@@ -135,73 +133,123 @@ export default {
   },
   data() {
     return {
+      dialogVisible:false,
+      dialogImageUrl:"",
       forminfo: { ...defaultItem },
       rules: {
         // 验证规则对象！
         goodsname:[{ required: true, message: "必填！", trigger: "blur" }]
       },
-      list:[{value:""}],
-      activeName:"first"
+
+        filelist:[],  // [{name:'',url:''}]
+        activeName:'first',
+        secondlist:[],  // 二级分类
+        attrslist:[]  // 规格值列表
     };
   },
   computed: {
     ...mapGetters({
-        catelist:"category/catelist",
+        catelist: "category/categorylist",
         specslist:"specs/specslist"
     }),
   },
-  created(){},
+  created(){
+
+  },
   
   mounted(){
-    if(!this.goodslist.length){
-      this.get_goods_list()
+    if(!this.catelist.length){
+      this.get_category_list()
+    }
+    if(!this.specslist.length){
+      this.get_specs_list()
     }
   },
   methods: {
-      //添加属性
-      addAttrs(){
-         this.list.push({value:""})
-      },
-      // 删除属性
-      delAttrs(idx){
-        this.list.splice(idx,1)
-      },
+     
 
     ...mapActions({
-      get_goods_list:"goods/get_goods_list",
-   
+      get_category_list:"category/get_category_list",
+      get_specs_list:"specs/get_specs_list",
+      get_goods_list:"goods/get_goods_list"
     }),
+      see(file){
+            this.dialogVisible = true;
+            this.dialogImageUrl = file.url // JS 生成的预览地址！
+        },
+        change(file,fileList){
+            this.forminfo.img = file.raw;  // file.raw 是原生文件信息！
+        },
+        remove(file,fileList){
+             this.forminfo.img =''
+        },
+       topChange(id){  // 一级分类变化
+            this.secondlist = []
+            this.forminfo.second_cateid = ''
+            // id就是选中的ID，根据这个ID遍历一级分类数组，找出其对应的chilren就是二级分类列表！
+            this.catelist.forEach(val=>{
+                if(val.id==id){
+                    this.secondlist = val.children;
+                }
+            })
+        },
+        specsChange(id){  // 规格名发生变化
+            this.attrslist = [];
+            this.forminfo.specsattr = [];
+            this.specslist.forEach(val=>{
+                if(val.id==id){
+                    this.attrslist = val.attrs;
+                }
+            })
+        },
+        setinfo(val){  // 将数据赋给默认defaultItem; 赋给表单
+            if(val.img){
+                this.filelist = [{
+                    name:val.catename,
+                    url:this.$host+val.img
+                }]
+            }
+            val.children ? delete val.children:''
+            this.topChange(val.first_cateid)
+            this.specsChange(val.specsid)
+            'firstcatename' in val ? delete val.firstcatename:'';
+            'secondcatename' in val ? delete val.secondcatename:'';
+            // 手动设置编辑器的内容
+            this.$nextTick(()=>{
+                this.$refs.wangeditor.setHtml(val.description);
+            })
+            defaultItem = {...val};
+            this.forminfo = {...val};
+        },
     // 提交
     async submit(){
-       if(!this.list.every(val=>val.value)){
-         this.$message.warning("请输入属性值")
-         return;
-       }
-     this.forminfo.attrs = this.list.map(val=>val.value);
-     this.forminfo.attrs = this.forminfo.attrs.join(',')
-
-
-        // 表单验证
-      this.$refs.form.validate(async (valid) => {
-        if (valid) {    //表单验证如果通过验证则继续执行
-          let res;
-          if (this.info.isAdd) {
-            //判断是添加还是修改
-            res = await addGoods(this.forminfo);
-            // console.log(res);
-          } else {
-            res = await editGoods(this.forminfo);
-          }
-          if (res.code == 200) {
-            this.$message.success(res.msg); //提示添加成功
-            this.info.isShow = false;
-            this.get_goods_list(); // 再次获取列表，让仓库里面的数据是最新的！
-            this.cancel();
-          } else {
-            this.$message.error(res.msg);
-          }
-        }
-      });
+     // 文章正文！
+            this.forminfo.description = this.$refs.wangeditor.getHtml();
+            // gethtml sethtml 是wangeditor组件自带的方法
+            // 表单验证！
+            this.$refs.form.validate(async valid=>{
+                if(valid){ // 如果验证通过！
+                    let res;
+                    // 提交FormData类型！
+                    let fd = new FormData();
+                    for(let k in this.forminfo){
+                        fd.append(k,this.forminfo[k])
+                    }
+                    if(this.info.isAdd){ // 添加还是修改！
+                        res = await addGoods(fd);
+                    }else{
+                        res = await editGoods(fd)
+                    }
+                    if(res.code==200){
+                        this.$message.success(res.msg)
+                        this.info.isShow = false;
+                        this.get_goods_list();  // 再次获取列表，让仓库里面的数据是最新的！
+                        this.cancel();
+                    }else{
+                        this.$message.error(res.msg)
+                    }
+                }
+            })
     },
     reset(){
       if(this.info.isAdd){
@@ -213,18 +261,14 @@ export default {
     //表单的@close 事件
     cancel(){
       this.forminfo = {...resetItem}  //重新赋值
-      this.list = [{value:""}]
+      this.filelist = [];
+      this.$refs.wangeditor.setHtml("")
     },
     // 数据的回显操作
-    setinfo(val){
-        this.list = val.attrs.map(v=>({
-          value:v
-        }))
-        defaultItem = {...val};
-        this.forminfo = {...val};
-    },
   },
-  components: {},
+  components: {
+    vueWangeditor
+  },
 };
 </script>
 <style scoped>

@@ -1,17 +1,17 @@
 import $axios from "@/common/http"  // 导入封装好的axios!
 
 // 获取菜单列表
-export async function getGoods(page = 1,size = 10){
-    let res = await $axios.get("/goodslist?istree=1",{
-        params:{
+export async function getGoods(page = 1, size = 10) {
+    let res = await $axios.get("/goodslist", {
+        params: {
             size,
             page
         }
     })
-    if(res.code==200 && res.list){
+    if (res.code == 200 && res.list) {
         return res.list
-    }else{
-        return []
+    } else {
+        return [];
     }
 }
 
