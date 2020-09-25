@@ -2,24 +2,22 @@
   <el-dialog :title="info.isAdd ? '添加管理员':'修改管理员'" @close="cancel" :visible.sync="info.isShow" width="50%">
     <!-- 表单 -->
      <el-form :model="forminfo" ref="form" :rules="rules" label-width="150px">
-       <el-form-item label="管理员角色" prop="roleid">
-           <el-select v-model="forminfo.roleid" placeholder="请选择角色">
-             <el-option v-for="item in rolelist" 
-                        :key="item.id"
-                        :label="item.rolename"
-                        :value="item.id">
-             </el-option>
-           </el-select>
-       </el-form-item>
+        <el-form-item label="管理员角色" prop="roleid">
+            <el-select v-model="forminfo.roleid" placeholder="请选择角色">
+              <el-option v-for="item in rolelist" 
+                          :key="item.id"
+                          :label="item.rolename"
+                          :value="item.id">
+              </el-option>
+            </el-select>
+        </el-form-item>
     
       <el-form-item label="管理员名称" prop="username">
         <el-input v-model="forminfo.username" placeholder="请输入管理员名称"></el-input>
       </el-form-item>
 
        <el-form-item label="管理员密码" prop="password">
-
         <el-input v-model="forminfo.password" :placeholder="info.isAdd ? '请输入管理员密码':'为空表示不修改'"></el-input>
-        
       </el-form-item>
 
        
@@ -46,6 +44,7 @@ let defaultItem = {
   password:"",
   status: 1, //状态 1正常 2禁用
 };
+
 let resetItem = { ...defaultItem };
 export default {
   props: {
@@ -66,7 +65,6 @@ export default {
         // 验证规则对象！
         roleid:[{ required: true, message: "必填！", trigger: "blur" }],
         username:[{ required: true, message: "必填！", trigger: "blur" }]
-
       },
     };
   },
@@ -85,7 +83,8 @@ export default {
   methods: {
     ...mapActions({
       get_role_list:"role/get_role_list",
-      get_user_list:"user/get_user_list"
+      get_user_list:"user/get_user_list",
+    
     }),
     // 提交
     async submit(){

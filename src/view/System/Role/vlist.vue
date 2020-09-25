@@ -6,6 +6,7 @@
        <el-table-column label="角色名称" prop="rolename" align="center"></el-table-column>
        
          <el-table-column
+         
           label="类型">
             <template slot-scope="scope">
                <el-tag type="success" v-if="scope.row.status==1">启用</el-tag>

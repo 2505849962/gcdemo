@@ -21,8 +21,9 @@
             </template>
          </el-table-column>
 
+
           <el-table-column
-          label="修改">
+          label="操作">
             <template slot-scope="scope">
                 <el-button type="primary" size="small" @click="edit(scope.row)" circle icon="el-icon-edit"></el-button>
                 <el-button type="danger" size="small"  @click="del(scope.row.id)"  circle icon="el-icon-delete"></el-button>

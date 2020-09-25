@@ -44,8 +44,6 @@
 
       </el-form-item>
         
-
-
       <el-form-item label="状态" prop="url" v-if="forminfo.type==2">
         <el-switch v-model="forminfo.status" :active-value="1" :inactive-value="2"></el-switch>
       </el-form-item>
@@ -61,7 +59,6 @@
 <script>
 import { addCategory, editCategory } from "@/request/category";
 import { mapGetters, mapActions } from "vuex";
-
 
 let defaultItem = {
   pid: 0,
@@ -120,7 +117,6 @@ export default {
       this.forminfo.img = ""
     },
 
-
     ...mapActions({
       get_category_list: "category/get_category_list",
     }),
@@ -133,6 +129,7 @@ export default {
           for(let k in this.forminfo){
             sj.append(k,this.forminfo[k])
           }
+
           if (this.info.isAdd) {
             //判断是添加还是修改
             res = await addCategory(sj);
@@ -170,6 +167,7 @@ export default {
             url:this.$host+val.img
           }]
         }
+        
        val.children ? delete val.children : ''
        defaultItem = {...val} 
        this.forminfo = {...val}

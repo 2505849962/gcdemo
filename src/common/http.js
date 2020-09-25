@@ -9,7 +9,6 @@ let $axios = axios.create({
 
 // 请求拦截器
 $axios.interceptors.request.use(function (config) {
-    // console.log(config)
     if(config.url == '/userlogin'){
         return config;
     }else{
@@ -23,7 +22,6 @@ $axios.interceptors.request.use(function (config) {
     // 对请求错误做些什么
     return Promise.reject(error);
 });
-
 // 添加响应拦截器
 $axios.interceptors.response.use(function (response) {
     // console.log(response)
@@ -38,6 +36,4 @@ $axios.interceptors.response.use(function (response) {
     // 对响应错误做点什么
     return Promise.reject(error);
 });
-
-
 export default $axios

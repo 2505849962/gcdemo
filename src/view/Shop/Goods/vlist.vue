@@ -26,7 +26,7 @@
            <el-table-column prop="price" label="价格" align="center"></el-table-column>
            <el-table-column prop="market_price" label="市场价格" align="center"></el-table-column>
 
-           <!-- <el-table-column label="是否热卖">
+           <el-table-column label="是否热卖">
               <template slot-scope="scope">
                    <el-switch v-model="scope.row.ishot" :active-value="1" :inactive-value="2"></el-switch>
               </template>
@@ -35,13 +35,13 @@
               <template slot-scope="scope">
                    <el-switch v-model="scope.row.isnew" :active-value="1" :inactive-value="2"></el-switch>
               </template>
-          </el-table-column> -->
-          <!-- <el-table-column label="状态">
+          </el-table-column>
+          <el-table-column label="状态">
               <template slot-scope="scope">
                   <el-tag type="success" v-if="scope.row.status==1">启用</el-tag>
                   <el-tag type="danger" v-if="scope.row.status==2">禁用</el-tag>
               </template>
-          </el-table-column> -->
+          </el-table-column>
          
           <el-table-column label="修改">
                 <template slot-scope="scope">
@@ -55,7 +55,7 @@
       @size-change="set_size"
       @current-change="set_page"
       :current-page="page"
-      :page-sizes="[10, 20, 30, 40]"
+      :page-sizes="[1, 2, 3, 4]"
       :page-size="size"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">

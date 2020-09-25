@@ -84,6 +84,7 @@
 
       </el-tabs>
 
+
       <el-row>
         <el-col :span="16" :offset="5">
           <el-form-item label>
@@ -153,9 +154,7 @@ export default {
         specslist:"specs/specslist"
     }),
   },
-  created(){
-
-  },
+  created(){},
   
   mounted(){
     if(!this.catelist.length){
@@ -166,8 +165,6 @@ export default {
     }
   },
   methods: {
-     
-
     ...mapActions({
       get_category_list:"category/get_category_list",
       get_specs_list:"specs/get_specs_list",
@@ -216,6 +213,7 @@ export default {
             'secondcatename' in val ? delete val.secondcatename:'';
             // 手动设置编辑器的内容
             this.$nextTick(()=>{
+                console.log(this.$refs.wangeditor)
                 this.$refs.wangeditor.setHtml(val.description);
             })
             defaultItem = {...val};

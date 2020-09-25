@@ -5,7 +5,7 @@ export default {
   state:{
       goodslist:[],
       page:1,
-      size:10,
+      size:1,
       total:0,
   },
   getters:{
@@ -31,10 +31,10 @@ export default {
   },
   actions:{
        // 请求菜单列表的数据！
-      async get_goods_list({commit}){
-         let res = await getGoods();
+      async get_goods_list({commit,dispatch,state}){
+         let res = await getGoods(state.page,state.size);
          commit('SET_LIST',res) 
-         
+         dispatch('get_goods_total')
       },
       async get_goods_total({commit}){
           let res = await getTotal();

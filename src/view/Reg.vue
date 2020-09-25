@@ -1,10 +1,18 @@
 <template>
- <el-row class="login-bg">
+   <el-row class="login-bg">
       <el-col :span="8" class="login-box">
           <!-- <h3>小U商城管理系统</h3> -->
           <el-form :model="forminfo" ref="form" :rules="rules" >
-            <el-form-item prop="username">
-              <el-input v-model="forminfo.username" placeholder="请输入账号">
+            <el-form-item prop="nickname">
+              <el-input v-model="forminfo.nickname" placeholder="请输入昵称">
+                  <template slot="prepend">
+                    <i class="el-icon-user"></i>
+                  </template>
+              </el-input>
+            </el-form-item>
+
+              <el-form-item prop="phone">
+              <el-input v-model="forminfo.phone" placeholder="请输入手机号">
                   <template slot="prepend">
                     <i class="el-icon-user"></i>
                   </template>
@@ -20,40 +28,44 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button class="login-btn" type="primary" @click="submit">立即登录</el-button>
+              <el-button class="login-btn" type="primary" @click="submit">立即注册</el-button>
             </el-form-item>
           </el-form>
       </el-col>  
    </el-row>
 </template>
-
 <script>
-import { mapActions } from "vuex"
+
+import { REG } from "@/request/user"
+
+let defaultItem = {
+        nickname:"",  //昵称
+        phone:"",     //手机号
+        password:"",   //密码
+}
 export default {
  data(){
  return{
-     forminfo:{
-        username:"8888",
-        password:"8888",
-     },
+     forminfo:{...defaultItem},
      rules:{
-       password:[{ required: true, message: "必填！", trigger: "blur" }],
-       username:[{ required: true, message: "必填！", trigger: "blur" }]
+       nickname:[{ required: true, message: "必填！", trigger: "blur" }],
+       phone:[{ required: true, message: "必填！", trigger: "blur" }],
+       password:[{ required: true, message: "必填！", trigger: "blur" }]
      }
  }
  },
- methods:{
-    ...mapActions({
-       login:"user/login"
-    }),
-    submit(){
-       this.$refs.form.validate(valid=>{
-         if(valid){
-           this.login(this.forminfo)
+        methods:{
+            submit(){
+            this.$refs.form.validate(valid=>{
+                if(valid){
+                 REG(this.forminfo)
+                 alert("注册成功")
+                  this.forminfo = {...defaultItem}
+                }
+
+            })
          }
-       })
-    }
- }
+        }
 }
 
 </script>
@@ -64,7 +76,7 @@ export default {
    display: flex;
    justify-content: center;
    align-items: center;
-   background-image: url("../assets/1.jpg");
+   background-image: url("../assets/2.jpg");
    background-size: 100% 100%;
 }
 .login-box{

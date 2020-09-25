@@ -8,25 +8,12 @@
     :tree-props="{children: 'children'}"
     >
 
-        <el-table-column
-          prop="id"
-          label="ID"
-          align="center"
-          width="180">
+        <el-table-column prop="id" label="ID" align="center" width="180"></el-table-column>
+
+        <el-table-column prop="title" label="菜单名称" align="center" width="180">
         </el-table-column>
 
-        <el-table-column
-          prop="title"
-          label="菜单名称"
-          align="center"
-          width="180">
-        </el-table-column>
-
-        <el-table-column
-          prop="url"
-          label="菜单地址"
-          align="center">
-        </el-table-column>
+        <el-table-column prop="url" label="菜单地址" align="center"></el-table-column>
 
           <el-table-column label="图标">
             <template slot-scope="scope">
@@ -34,8 +21,7 @@
             </template>
          </el-table-column>
 
-            <el-table-column
-          label="类型">
+            <el-table-column label="类型">
             <template slot-scope="scope">
                <el-tag type="success" v-if="scope.row.type==1">目录</el-tag>
                <el-tag type="warning" v-if="scope.row.type==2">菜单</el-tag>

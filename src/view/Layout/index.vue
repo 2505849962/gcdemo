@@ -6,7 +6,10 @@
        <el-container class="page-content">
           <el-header class="page-header">
              <top/>
+             <TabNav/>
           </el-header>
+           
+
           <el-main class="page-main">
 
              <router-view/>
@@ -19,6 +22,7 @@
 import top from './top'
 import left from './left'
 import { mapState } from 'vuex'
+import TabNav from "./TabNav"
 export default {
  data(){
  return{}
@@ -27,7 +31,7 @@ export default {
     ...mapState(['iscollapse'])
  },
  components:{
-     top,left
+     top,left,TabNav
  }
 }
 </script>
@@ -50,5 +54,8 @@ export default {
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, .4);
     position: relative;
     z-index: 100;
+}
+.page-main{
+    margin-top: 50px;
 }
 </style>

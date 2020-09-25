@@ -18,8 +18,6 @@ export default {
     padding: 0;
     list-style: none;
 }
-
-
 .table-bg{
   background-color: #fff;
   padding: 20px;

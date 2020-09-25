@@ -6,12 +6,12 @@
         <el-button v-if="iscollapse" type="primary" @click="TOGGLE" size="small" class="toggle-btn" icon="el-icon-s-unfold"></el-button>
         <el-button v-else type="primary" size="small" @click="TOGGLE" class="toggle-btn" icon="el-icon-s-fold"></el-button>
         
+
         <!-- 面包屑导航 -->
-        
-         <el-breadcrumb separator="/" class="mbx">
+         <el-breadcrumb separator=">" class="mbx">
           <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>{{$route.meta.title}}</el-breadcrumb-item>
-        </el-breadcrumb>
+         </el-breadcrumb>  
         <!-- 返回按钮 -->
          <el-button size="small" v-if="$route.path!='/index'"  @click="$router.back()" icon="el-icon-back" circle></el-button>
     </div>
@@ -22,8 +22,9 @@
             欢迎{{username}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item  @click.native="togglescreenfull"> <i class="el-icon-full-screen"></i> {{isfull ? '退出全屏':'全屏操作'}}</el-dropdown-item>
-            <el-dropdown-item @click.native="QUIT"> <i class="el-icon-switch-button"></i> 退出登录</el-dropdown-item>
+            <el-dropdown-item  @click.native="togglescreenfull"> <i class="el-icon-full-screen"></i> {{isfull ? '退出全屏':'全屏操作'}} </el-dropdown-item>
+            <!-- 就是在父组件中给子组件绑定一个原生的事件，就将子组件变成了普通的HTML标签，不加'. native'事件是无法触发的。 -->
+            <el-dropdown-item @click.native="quit"> <i class="el-icon-switch-button"></i> 退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
     </div>
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-import { mapState,mapMutations,mapGetters } from 'vuex'
+import { mapState,mapMutations,mapGetters, mapActions } from 'vuex'
 // 全屏插件
 import screenfull from 'screenfull'
 export default {
@@ -50,7 +51,9 @@ export default {
  methods:{
      ...mapMutations({
        TOGGLE:"TOGGLE",
-       QUIT:"user/QUIT"
+     }),
+     ...mapActions({
+        quit:"user/quit"
      }),
      togglescreenfull(){
         if (!screenfull.isEnabled) {

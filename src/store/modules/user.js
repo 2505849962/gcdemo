@@ -46,6 +46,7 @@ export default {
           // 存入vuex是为了各组件方便直接拿取数据
             state.userinfo = data;
         } ,
+
        //退出登录
        QUIT(state){
            localStorage.removeItem("userinfo")
@@ -53,6 +54,8 @@ export default {
            router.push("/login")
        }      
     },
+
+
     actions:{
         async get_user_list({commit,state,dispatch}){
          let res = await getUser(state.page,state.size);
@@ -63,6 +66,7 @@ export default {
             let res = await getTotal();
             commit('SET_TOTAL',res)
         },
+
         set_page({commit,dispatch},data){
             commit('SET_PAGE',data)
             dispatch('get_user_list')
@@ -76,6 +80,7 @@ export default {
         // 登录方法
        async login({commit},data){
             let res = await Login(data); 
+            console.log(res)
             if(res.code == 200){
                commit('SET_USERINFO',res.list) 
                 Message.success("登录成功")
@@ -83,7 +88,11 @@ export default {
             }else{
                 Message.error(res.msg)
             }
+        },
 
+        quit({commit}){
+           commit('QUIT'),
+           commit("tabnav/DEL_ALL",null,{root:true})  
         }
 
     }

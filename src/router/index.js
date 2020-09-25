@@ -18,6 +18,11 @@ let router =  new Router({
       meta:{title:"登录"}
     },
     {
+      path: '/reg',
+      component:()=>import("@/view/Reg"),
+      meta:{title:"注册"}
+    },
+    {
       path: '/',
       component:()=>import("@/view/Layout"),
       meta:{title:"XXX管理系统"},
@@ -81,7 +86,7 @@ let router =  new Router({
 
 
 router.beforeEach((to,from,next)=>{
-  if(to.path=="/login"){
+  if(to.path=="/login" || to.path=="/reg"){
     document.title = to.meta.title
     next();
   }else{

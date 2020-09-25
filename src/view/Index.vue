@@ -6,6 +6,7 @@
   </div>
 </template>
 <script>
+
 import ECharts from "vue-echarts";
 import "echarts/lib/chart/pie";
 import "echarts/lib/chart/bar";

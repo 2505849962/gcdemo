@@ -5,7 +5,7 @@
     
       <el-form-item label="商品规格名称" prop="specsname">
         <el-input v-model="forminfo.specsname" placeholder="请输入商品规格名称"></el-input>
-      </el-form-item>
+      </el-form-item> 
 
        <el-form-item label="商品属性">
          <label v-for="(item,index) in list" :key="index" >
@@ -13,10 +13,8 @@
             <el-button v-if="index==0"  type="primary" @click="addAttrs">添加属性</el-button>
             <el-button v-else type="danger" @click="delAttrs(index)">删除属性</el-button>
          </label>
-         
       </el-form-item>
 
-    
       <el-form-item label="状态" prop="status">
         <el-switch v-model="forminfo.status" :active-value="1" :inactive-value="2"></el-switch>
       </el-form-item>
@@ -38,6 +36,7 @@ let defaultItem = {
   attrs:"",
   status: 1, //状态 1正常 2禁用
 };
+
 let resetItem = { ...defaultItem };
 export default {
   props: {
@@ -67,7 +66,7 @@ export default {
     }),
   },
   created(){},
-  
+
   mounted(){
     if(!this.specslist.length){
       this.get_specs_list()
@@ -82,20 +81,19 @@ export default {
       delAttrs(idx){
         this.list.splice(idx,1)
       },
-
     ...mapActions({
       get_specs_list:"specs/get_specs_list",
-   
     }),
     // 提交
     async submit(){
+
        if(!this.list.every(val=>val.value)){
          this.$message.warning("请输入属性值")
          return;
        }
+
      this.forminfo.attrs = this.list.map(val=>val.value);
      this.forminfo.attrs = this.forminfo.attrs.join(',')
-
 
         // 表单验证
       this.$refs.form.validate(async (valid) => {
@@ -105,7 +103,7 @@ export default {
             //判断是添加还是修改
             res = await addSpecs(this.forminfo);
             // console.log(res);
-          } else {
+          }else{
             res = await editSpecs(this.forminfo);
           }
           if (res.code == 200) {
@@ -116,7 +114,7 @@ export default {
           } else {
             this.$message.error(res.msg);
           }
-        }
+        }   
       });
     },
     reset(){

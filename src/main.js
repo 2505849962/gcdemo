@@ -12,6 +12,7 @@ Vue.use(Element)
 
 Vue.config.productionTip = false
 
+
 Vue.prototype.$host = "http://localhost:3030"
 // 注册过滤器
 import filterObj from "./filter"

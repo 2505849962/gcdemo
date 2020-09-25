@@ -37,5 +37,5 @@ export function delSpecs(id){
 // 获取管理总数
 export async function getTotal(){
     let res = await $axios.get("/specscount")
-    console.log(res)
+    return res.list[0].total
 }

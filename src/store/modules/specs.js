@@ -5,7 +5,7 @@ export default {
   state:{
       specslist:[],
       page:1,
-      size:10,
+      size:1,
       total:0,
   },
   getters:{
@@ -31,10 +31,10 @@ export default {
   },
   actions:{
        // 请求菜单列表的数据！
-      async get_specs_list({commit}){
-         let res = await getSpecs();
+      async get_specs_list({commit,dispatch,state}){
+         let res = await getSpecs(state.page,state.size);
          commit('SET_LIST',res) 
-         
+         dispatch('get_specs_total') 
       },
       async get_specs_total({commit}){
           let res = await getTotal();

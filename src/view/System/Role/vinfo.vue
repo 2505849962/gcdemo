@@ -90,6 +90,7 @@ export default {
           this.$message.error("请选择权限")
           return
         }
+
         // 表单验证
       this.$refs.form.validate(async (valid) => {
         if (valid) {    //表单验证如果通过验证则继续执行
@@ -112,6 +113,7 @@ export default {
         }
       });
     },
+
     reset(){
       if(this.info.isAdd){
          this.forminfo = {...resetItem}
@@ -129,12 +131,14 @@ export default {
 
 
     // 数据的回显操作
+    // 修改按钮点击 获得数据传给setinfo
     setinfo(val){
        
       let idarr = val.menus.split(",")
+
       if(idarr[0]){
         this.checkStrictly = true;  //修改之前父子互不关联
-        this.$nextTick(()=>{   //vue中的方法等到节点渲染完之后在执行某些操作
+        this.$nextTick(()=>{   //vue中的方法 等到节点渲染完之后在执行某些操作
           this.$refs.tree.setCheckedKeys(idarr)
           this.checkStrictly = false;  //修改之后再次关联上
         })
@@ -148,4 +152,5 @@ export default {
 };
 </script>
 <style scoped>
+
 </style>

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "dayjs": "^1.8.36",
     "echarts": "^4.9.0",
     "element-ui": "^2.13.2",
     "screenfull": "^5.0.2",

@@ -36,3 +36,10 @@ export async function getTotal(){
 export function Login(data){
     return $axios.post("/userlogin",data)
 }
+
+// 登录测试
+export async function REG(data){
+   let res = await $axios.post("/register",data)
+   console.log(res)
+}
+
